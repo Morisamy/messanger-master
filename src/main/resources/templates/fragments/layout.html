@@ -1,0 +1,56 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags"
+    th:fragment="layout (template, menu)">
+<head>
+<title>Courmessenger</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li class="active"><a th:href="@{/dbdump}"><span class="glyphicon glyphicon-cloud-download"></span> Dump Database</a></li>
+            </ul>
+
+            <div sec:authorize="isAuthenticated()">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a th:href="@{/messages/inbox}"><span class="glyphicon glyphicon-inbox"></span> Inbox</a></li>
+                    <li class="active"><a th:href="@{/messages/outbox}"><span class="glyphicon glyphicon-folder-open"></span> Sent Messages</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <form id="logoutForm" th:action="@{/logout}" method="post">
+                        </form>
+                        <a href="javascript:none"  onclick="$('#logoutForm').submit();"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                    </li>
+                </ul>
+                <p class="navbar-text navbar-nav navbar-right">(<span sec:authentication="name">Bob</span>)</p>
+            </div>
+
+            <div sec:authorize="!isAuthenticated()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Registration</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div th:replace="${template}"></div>
+    <footer>
+        <div class="container">
+            <p class="text-center">
+                <a href="https://github.com/aberenguel/courmessenger" target="_new">Source at Github</a>
+            </p>
+        </div>
+    </footer>
+</body>
